@@ -1,0 +1,46 @@
+body {
+  font-family: Arial, sans-serif;
+ background-image: url('https://s2.qwant.com/thumbr/474x337/d/4/9c36f17f63c794f9436b7eb8befea0d857c6c89422ab1ba0d641ceb3a29a33/OIP.BaCdaVjDOpFdu0sR_X-IQQAAAA.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%2Fid%2FOIP.BaCdaVjDOpFdu0sR_X-IQQAAAA%3Fpid%3DApi&q=0&b=1&p=0&a=0');
+  background-size: cover;
+  background-position: center;
+}
+
+#accueil {
+  text-align: center;
+  margin-top: 100px;
+}
+
+h1 {
+  font-size: 48px;
+  color: #ffffff;
+  text-shadow: 2px 2px #000;
+}
+
+p {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #ffffff;
+  text-shadow: 2px 2px #000;
+}
+
+#start, #quit {
+  width: 100px;
+  height: 50px;
+  font-size: 24px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+#start:hover, #quit:hover {
+  background-color: #ccc;
+}
+
+#credits {
+  font-size: 18px;
+  color: #ffffff;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+
+}
