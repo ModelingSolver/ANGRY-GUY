@@ -2,18 +2,41 @@ body {
   margin: 0;
   overflow: hidden;
   background: black;
+  position: relative;
+  height: 100vh;
+  width: 100vw;
+  font-family: Arial, sans-serif;
+}
+
+#video-background {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Derrière tout */
+  pointer-events: none; /* Ignore les clics sur la vidéo */
+}
+
+#video-background iframe {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 #hero {
   position: absolute;
   font-size: 50px;
   cursor: grab;
+  user-select: none;
+  z-index: 10;
 }
 
 .coeur {
   position: absolute;
   font-size: 50px;
   cursor: pointer;
+  user-select: none;
+  z-index: 10;
 }
 
 #chrono {
@@ -24,4 +47,11 @@ body {
   transform: translateX(-50%);
   color: white;
   font-family: monospace;
+  z-index: 10;
+}
+
+h1 {
+  color: white;
+  text-align: center;
+  margin-top: 30vh;
 }

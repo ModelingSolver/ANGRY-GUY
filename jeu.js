@@ -2,11 +2,11 @@ let hero = document.getElementById('hero');
 const heroEmojis = ['😠', '😑', '😃'];
 let heroIndex = 0;
 hero.textContent = heroEmojis[heroIndex];
-let musique = document.getElementById('musique');
 let coeurs = [];
 let niveau = 1;
 let chrono = 5;
 let timer;
+let gameIntervals = [];
 
 class Coeur {
   constructor() {
@@ -43,6 +43,8 @@ class Coeur {
 }
 
 function creerCoeurs(n) {
+  coeurs.forEach(c => c.element.remove());
+  coeurs = [];
   for (let i = 0; i < n; i++) {
     coeurs.push(new Coeur());
   }
@@ -70,11 +72,6 @@ function detecterCollisions() {
       heroIndex = (heroIndex + 1) % heroEmojis.length;
       hero.textContent = heroEmojis[heroIndex];
 
-      if (heroIndex === 1) {
-        musique.src = 'musique3.mp3';
-        musique.play();
-      }
-
       if (heroIndex === 2) {
         hero.style.fontSize = '200px';
         gameOver();
@@ -85,28 +82,73 @@ function detecterCollisions() {
   });
 }
 
+function clearGameIntervals() {
+  gameIntervals.forEach(id => clearInterval(id));
+  gameIntervals = [];
+}
+
 function niveauSuivant() {
+  clearGameIntervals();
   niveau++;
   document.body.innerHTML = '<h1 style="color:white; text-align:center;">LEVEL COMPLETED</h1>';
 
   setTimeout(() => {
     document.body.innerHTML = `
+      <div id="video-background">
+        <iframe
+          id="video"
+          src="https://www.youtube.com/embed/gnx-WChzlDg?autoplay=1&mute=1&loop=1&playlist=gnx-WChzlDg"
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+      </div>
       <div id="hero">${heroEmojis[heroIndex]}</div>
       <div id="chrono"></div>
-      <audio id="musique" src="musique2.mp3" autoplay loop></audio>
     `;
+
+    // Activation son au premier clic/touch
+    function activerSon() {
+      const iframe = document.getElementById('video');
+      if (!iframe) return;
+
+      // Supprimer "mute=1" de l'URL pour activer le son
+      if (iframe.src.includes('mute=1')) {
+        iframe.src = iframe.src.replace('mute=1', 'mute=0');
+      }
+
+      document.removeEventListener('click', activerSon);
+      document.removeEventListener('touchstart', activerSon);
+    }
+    document.addEventListener('click', activerSon);
+    document.addEventListener('touchstart', activerSon);
+
+    // Récupérer les éléments après modification du DOM
     hero = document.getElementById('hero');
-    musique = document.getElementById('musique');
     addHeroMovement();
     startGame();
   }, 2000);
 }
 
+
 function gameOver() {
-  musique.src = 'musique_game_over.mp3';
-  musique.play();
-  document.body.innerHTML = '<h1 style="text-align:center; color:white;">Okay u loose so now u know u just can\'t have everything in life!!</h1>';
+  clearGameIntervals();
+  document.body.innerHTML = `
+    <div id="image-background">
+      <img 
+        src="https://s1.qwant.com/thumbr/474x355/3/a/2f6d6b69d75be20030edfcb55f936d0ea7d3c71defd1932cd88b181548b3d9/th.jpg?u=https%3A%2F%2Ftse.mm.bing.net%2Fth%3Fid%3DOIP.HvCpPIqpqSgmasyZc-Fz7AHaFj%26r%3D0%26pid%3DApi&q=0&b=1&p=0&a=0" 
+        alt="Game Over Image" 
+        style="position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: -1;">
+    </div>
+    <h1 style="text-align:center; color:white; font-size:80px; position: absolute; top: 50px; left: 50%; transform: translateX(-50%); z-index: 10; text-shadow: 3px 3px 5px black;">GAME OVER</h1>
+    <h2 style="text-align:center; color:white; font-size:30px; position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 10;">
+      Okay u loose so now u know u just can't have everything in life!!
+    </h2>
+  `;
 }
+
+
+
 
 function startGame() {
   creerCoeurs(5 * niveau);
@@ -114,6 +156,7 @@ function startGame() {
   const chronoDiv = document.getElementById('chrono');
   chronoDiv.textContent = chrono;
 
+  if(timer) clearInterval(timer);
   timer = setInterval(() => {
     chrono--;
     chronoDiv.textContent = chrono;
@@ -125,8 +168,9 @@ function startGame() {
 }
 
 function jeu() {
-  setInterval(deplacerCoeurs, 16);
-  setInterval(detecterCollisions, 16);
+  clearGameIntervals();
+  gameIntervals.push(setInterval(deplacerCoeurs, 16));
+  gameIntervals.push(setInterval(detecterCollisions, 16));
 }
 
 function addHeroMovement() {
@@ -135,16 +179,20 @@ function addHeroMovement() {
 
   hero.addEventListener('mousedown', () => {
     isDragging = true;
+    hero.style.cursor = 'grabbing';
   });
 
   document.addEventListener('mouseup', () => {
     isDragging = false;
+    hero.style.cursor = 'grab';
   });
 
   document.addEventListener('mousemove', (event) => {
     if (isDragging) {
-      hero.style.left = `${event.clientX}px`;
-      hero.style.top = `${event.clientY}px`;
+      const offsetX = hero.offsetWidth / 2;
+      const offsetY = hero.offsetHeight / 2;
+      hero.style.left = `${event.clientX - offsetX}px`;
+      hero.style.top = `${event.clientY - offsetY}px`;
     }
   });
 }
