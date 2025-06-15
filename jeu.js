@@ -17,8 +17,8 @@ class Coeur {
 
     this.x = Math.random() * (window.innerWidth - 50);
     this.y = Math.random() * (window.innerHeight - 50);
-    this.vx = (Math.random() - 0.5) * 4;
-    this.vy = (Math.random() - 0.5) * 4;
+    this.vx = (Math.random() - 0.5) * 16;
+    this.vy = (Math.random() - 0.5) * 16;
 
     this.element.style.left = `${this.x}px`;
     this.element.style.top = `${this.y}px`;
@@ -97,7 +97,7 @@ function niveauSuivant() {
       <div id="video-background">
         <iframe
           id="video"
-          src="https://www.youtube.com/embed/zglLlECZMro?autoplay=1&mute=1&loop=1&playlist=zglLlECZMro"
+          src="https://www.youtube.com/embed/v2AC41dglnM?autoplay=1&mute=1&loop=1&playlist=v2AC41dglnM"
           frameborder="0"
           allow="autoplay; encrypted-media"
           allowfullscreen
