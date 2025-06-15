@@ -97,7 +97,7 @@ function niveauSuivant() {
       <div id="video-background">
         <iframe
           id="video"
-          src="https://www.youtube.com/embed/v2AC41dglnM?autoplay=1&mute=1&loop=1&playlist=v2AC41dglnM"
+          src="https://www.youtube.com/embed/zglLlECZMro?autoplay=1&mute=1&loop=1"
           frameborder="0"
           allow="autoplay; encrypted-media"
           allowfullscreen
